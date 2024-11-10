@@ -1,0 +1,51 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_DB: yourdbname
+          POSTGRES_USER: youruser
+          POSTGRES_PASSWORD: yourpassword
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run ETL
+        run: python app/data_pipeline.py
+      - name: Build Docker image
+        run: |
+          docker build -t myapp:${{ github.sha }} .
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Push Docker image to GitHub Packages
+        run: |
+          docker tag myapp:${{ github.sha }} ghcr.io/ashika-shetty/sw-action-figure-co:${{ github.sha }}
+          docker push ghcr.io/ashika-shetty/sw-action-figure-co:${{ github.sha }}

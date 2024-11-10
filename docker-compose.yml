@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  db_source:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: source
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./app/sql/init_source_table.sql:/docker-entrypoint-initdb.d/setup.sql
+      - source_data:/var/lib/postgresql/data
+
+  db_dw:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: dw
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./app/sql/init_dw_table.sql:/docker-entrypoint-initdb.d/setup.sql
+      - dw_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    depends_on:
+      - db_source
+      - db_dw
+    environment:
+      SOURCE_DB_URL: postgres://user:password@db_source:5432/source
+      DW_DB_URL: postgres://user:password@db_dw:5432/dw
+
+volumes:
+  source_data:
+  dw_data:
