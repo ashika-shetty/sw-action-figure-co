@@ -27,8 +27,8 @@ This project implements a data pipeline for SW Action Figure Co., which processe
 
 1. **Clone the repository** (optional if you have the files already):
    ```bash
-   git clone https://your-repository-url.git
-   cd your-repository-directory
+   git clone https://github.com/ashika-shetty/sw-action-figure-co.git
+   cd sw-action-figure-co
    ```
 
 2. **Build and run the Docker containers**:
@@ -65,7 +65,3 @@ GitHub Actions is used to automate the linting, testing, and deployment of the D
 ## Contributing
 
 Contributions to this project are welcome. Please ensure that any pull requests pass the automated tests and conform to the coding standards set forth in the project.
-
-## License
-
-Specify your license here or indicate if the project is unlicensed.
