@@ -8,7 +8,7 @@ This project implements a data pipeline for SW Action Figure Co., which processe
 - Enriches data with character details from the Star Wars API (SWAPI).
 - Transforms data to include metrics like total revenue, quantity sold, and more.
 - Loads the transformed data into a PostgreSQL data warehouse.
-- Dockerized Python application for easy setup and deployment.
+- Python application for easy setup and deployment.
 - Continuous Integration and Deployment with GitHub Actions.
 
 ## Technologies Used
@@ -21,6 +21,7 @@ This project implements a data pipeline for SW Action Figure Co., which processe
 ## Prerequisites
 - Docker
 - Docker Compose
+- Python 3.9
 - Git (optional, for cloning the repository)
 
 ## Setup Instructions
@@ -38,19 +39,34 @@ This project implements a data pipeline for SW Action Figure Co., which processe
    This command builds the Docker image for the application and starts the necessary services defined in `docker-compose.yml`:
    - `db_source`: PostgreSQL database acting as the source of sales data.
    - `db_dw`: PostgreSQL database acting as the data warehouse.
-   - `app`: Python application that runs the ETL process.
 
 3. **Initialize the databases**:
    The databases are automatically initialized with the required schemas when the PostgreSQL containers are first launched, using the SQL scripts mounted from `./app/sql/`.
 
 ## Usage
 
-Once the Docker containers are running, the ETL process can be triggered by executing the following command:
-```bash
-docker-compose exec app python app/data_pipeline.py
-```
+Once the Docker containers are running, the ETL process can be triggered by setting up a Python environment and running the pipeline script:
 
-This command runs the `data_pipeline.py` script inside the `app` container, which performs the ETL operations.
+1. **Set up a Python virtual environment**:
+   ```bash
+   python3 -m venv sw-action-figure-co
+   source sw-action-figure-co/bin/activate
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Set the PYTHONPATH**:
+   ```bash
+   export PYTHONPATH=/path/to/your/project:$PYTHONPATH
+   ```
+
+4. **Run the data pipeline**:
+   ```bash
+   python app/data_pipeline.py
+   ```
 
 ## Architecture
 

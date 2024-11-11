@@ -64,7 +64,7 @@ async def load_data_to_dw(merged_data):
     :return:
     """
     try:
-        with psycopg2.connect(os.getenv('DW_DB_URL')) as conn:
+        with psycopg2.connect('postgres://user:password@localhost:5433/dw') as conn:
             with conn.cursor() as cursor:
                 query = """
                 INSERT INTO action_figures_summary (
@@ -91,7 +91,7 @@ async def extract_source_data():
     :return:
     """
     try:
-        with psycopg2.connect(os.getenv('SOURCE_DB_URL')) as conn:
+        with psycopg2.connect('postgres://user:password@localhost:5432/source') as conn:
             with conn.cursor() as cursor:
                 populate_source_data(cursor)
                 cursor.execute("SELECT action_figure_name, quantity, price, date_of_purchase FROM source")
