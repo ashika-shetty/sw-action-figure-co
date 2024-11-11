@@ -6,7 +6,7 @@ from faker import Faker
 fake = Faker()
 
 
-def populate_source_data(cursor, num_records=100):
+def populate_source_data(cursor, num_records=1000):
     """
 
     :return:

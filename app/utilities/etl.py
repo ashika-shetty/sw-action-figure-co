@@ -1,7 +1,5 @@
 import logging
 import asyncio
-import os
-
 import psycopg2
 import pandas as pd
 from psycopg2.extras import execute_batch

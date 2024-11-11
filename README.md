@@ -68,6 +68,12 @@ Once the Docker containers are running, the ETL process can be triggered by sett
    python app/data_pipeline.py
    ```
 
+5. **Run the FastAPI application**:
+   ```bash
+   uvicorn app.main:app --reload
+   ```
+   Open your web browser and navigate to `localhost:8000/docs` to view the API documentation and interact with the API.
+
 ## Architecture
 
 - **Data Extraction**: Data is extracted from the `db_source` PostgreSQL database using queries defined in the `extract_source_data` function in `app/utilities/etl.py`.
